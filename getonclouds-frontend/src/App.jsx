@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import {
   registerUser, loginUser,
   uploadFile, listFiles, deleteFile, downloadFile, getStorage,
+  previewFile,   // ← ADD THIS
 } from "./api";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -641,8 +642,8 @@ function FilePreview({ file, onClose, onDownload, downloadingId, getName, getSiz
     setTextContent(null);
     setErrorMsg("");
 
-    downloadFile(file.id)
-      .then((res) => {
+    previewFile(file.id)   // ← CHANGE THIS
+  .then((res) => {
         if (cancelled) return;
         const rawData = res.data;
         const mime = getMimeType(name);
