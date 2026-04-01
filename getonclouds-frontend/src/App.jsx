@@ -3,8 +3,6 @@ import {
   registerUser, loginUser,
   uploadFile, listFiles, deleteFile, downloadFile, getStorage,
 } from "./api";
-const [previewFile, setPreviewFile] = useState(null);
-const [showPreviewModal, setShowPreviewModal] = useState(false);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const formatBytes = (bytes) => {
@@ -866,19 +864,6 @@ function SmartShareModal({ file, getName, onClose, addToast }) {
     </div>
   );
 }
-const handlePreview = useCallback(async (file) => {
-  try {
-    setPreviewFile(null);
-    const response = await previewFile(file.id);
-    const blob = response.data;
-    const url = URL.createObjectURL(blob);
-    setPreviewFile({ ...file, previewUrl: url });
-    setShowPreviewModal(true);
-  } catch (error) {
-    console.error("Preview failed:", error);
-    addToast("Preview not available for this file type", "error");
-  }
-}, []);
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
@@ -1275,13 +1260,6 @@ export default function App() {
     return Object.entries(groups).sort((a,b) => new Date(b[0]) - new Date(a[0]));
   }, [files, getDate]);
 
-  <button 
-  className="action-btn" 
-  onClick={() => handlePreview(file)}
-  title="Preview"
->
-  👁️
-</button>
   // Health score tips
   const healthTips = useMemo(() => {
     const tips = [];
